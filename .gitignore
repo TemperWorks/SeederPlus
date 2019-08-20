@@ -4,9 +4,4 @@ docs
 vendor
 coverage
 .editorconfig
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/php.xml
-.idea/SeederPlus.iml
-.idea/workspace.xml
+.idea/

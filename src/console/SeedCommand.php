@@ -24,7 +24,6 @@ class SeedCommand extends Command
     {
         parent::__construct();
         $this->seeder = $seeder;
-
     }
 
 
@@ -49,7 +48,6 @@ class SeedCommand extends Command
 
         $this->menu->open();
 
-//        $this->info("Test");
     }
 
     private function getPaths(): array

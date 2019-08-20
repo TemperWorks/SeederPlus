@@ -3,7 +3,12 @@
 namespace Temper\SeederPlus;
 
 use Illuminate\Support\ServiceProvider;
+use Temper\SeederPlus\console\DeleteSnapshotCommand;
+use Temper\SeederPlus\console\ResetSnapshotCommand;
 use Temper\SeederPlus\console\SeedCommand;
+use Temper\SeederPlus\console\SetupDatabaseCommand;
+use Temper\SeederPlus\console\SnapshotDatabaseCommand;
+use Temper\SeederPlus\console\SnapshotsCommand;
 
 class SeederPlusServiceProvider extends ServiceProvider
 {
@@ -22,7 +27,7 @@ class SeederPlusServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('seederplus.php'),
+                __DIR__ . '/../config/seederplus.php' => config_path('seederplus.php'),
             ], 'config');
 
             // Publishing the views.
@@ -42,7 +47,12 @@ class SeederPlusServiceProvider extends ServiceProvider
 
             // Registering package commands.
              $this->commands([
-                 SeedCommand::class
+                 SeedCommand::class,
+                 SetupDatabaseCommand::class,
+                 SnapshotDatabaseCommand::class,
+                 ResetSnapshotCommand::class,
+                 SnapshotsCommand::class,
+                 DeleteSnapshotCommand::class
              ]);
         }
     }
@@ -53,7 +63,7 @@ class SeederPlusServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'seederplus');
+        $this->mergeConfigFrom(__DIR__ . '/../config/seederplus.php', 'seederplus');
 
         // Register the main class to use with the facade
 //        $this->app->singleton('seederplus', function () {

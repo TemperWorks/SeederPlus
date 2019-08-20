@@ -1,12 +1,9 @@
 <?php
 
-
 namespace Temper\SeederPlus;
-
 
 use Illuminate\Support\Collection;
 use PhpSchool\CliMenu\Builder\CliMenuBuilder;
-use PhpSchool\CliMenu\CliMenu;
 
 class MenuFactory
 {
