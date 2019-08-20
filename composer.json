@@ -1,0 +1,56 @@
+{
+    "name": "temper/seederplus",
+    "description": "Laravel Seeders on steroids",
+    "keywords": [
+        "temper",
+        "seederplus"
+    ],
+    "homepage": "https://github.com/Temper/seederplus",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Robert Baelde",
+            "email": "r.baelde@temper.works",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "5.8.*",
+        "php-school/cli-menu": "^3.2",
+        "phpdocumentor/reflection-docblock": "^4.3"
+    },
+    "require-dev": {
+        "orchestra/testbench": "3.8.*",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Temper\\SeederPlus\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Temper\\SeederPlus\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Temper\\SeederPlus\\SeederPlusServiceProvider"
+            ],
+            "aliases": {
+                "SeederPlus": "Temper\\SeederPlus\\SeederPlusFacade"
+            }
+        }
+    }
+}
