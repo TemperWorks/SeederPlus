@@ -10,7 +10,7 @@ use Temper\SeederPlus\Storage;
 
 class SetupDatabaseCommand extends Command
 {
-    protected $signature = 'seed:initDb';
+    protected $signature = 'db:fresh {--b|build}';
 
     protected $description = 'Setup a empty database with only the needed seeds executed for your seeding workflow';
 
@@ -27,7 +27,7 @@ class SetupDatabaseCommand extends Command
     {
         $this->info('Setting db to the minimal state');
 
-        if (!$this->baseSnapshot->exists()) {
+        if (!$this->baseSnapshot->exists() || $this->option('build')) {
 
             $this->info('Base snapshot does not exists yet, creating one now');
 

@@ -5,3 +5,4 @@ vendor
 coverage
 .editorconfig
 .idea/
+storage/base-snapshot.sql

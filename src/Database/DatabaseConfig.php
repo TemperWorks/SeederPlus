@@ -25,7 +25,7 @@ trait DatabaseConfig
     {
         $connection = $this->getDatabaseConnection();
 
-        return config("database.connections.{$connection}.host");
+        return config("database.connections.{$connection}.host") ?? config("database.connections.{$connection}.write.host");
     }
 
     /**
