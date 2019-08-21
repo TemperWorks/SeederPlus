@@ -10,8 +10,16 @@ abstract class SeederPlus extends Seeder
 
     protected $section = '';
     protected $states = [];
-    protected $name = 'seeder';
+    protected $relations = [];
+    protected $name = null;
     protected $enabled = true;
+
+    private $storage;
+
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
 
     public function getSection(): string
     {
@@ -25,12 +33,20 @@ abstract class SeederPlus extends Seeder
 
     public function getDisplayName(): string
     {
+        if($this->name === null){
+            return get_class($this);
+        }
         return $this->name;
     }
 
     public function available(): bool
     {
         return $this->enabled;
+    }
+
+    public function isDefaultNeededData(): bool
+    {
+        return array_key_exists(isDefaultNeededData::class, class_uses($this));
     }
 
     public function getStates(): Collection
@@ -46,11 +62,39 @@ abstract class SeederPlus extends Seeder
             return new SeederNotFound($this, $state);
         })->filter();
     }
+    public function AllRelations(): array
+    {
+        return collect($this->relations)->merge(
+            $this->getStates()->flatMap(function($seeder){
+                return $seeder->allRelations();
+            })
+        )->toArray();
 
+    }
     public function selected(): void
     {
         $this->command->closeMenu();
         $this->__invoke();
         $this->command->info("{$this->getDisplayName()} ran successful");
+    }
+
+    public function relation(string $relation, callable $callback)
+    {
+        $relation_id = $this->storage->get('relation.'.$relation);
+        if($relation_id === null){
+            return $callback();
+        }
+        if(!array_key_exists($relation, $this->relations)){
+            return $callback();
+        }
+
+        $modelClass = resolve($this->relations[$relation]);
+        $model = $modelClass->find($relation_id);
+        if($model === null){
+            $this->storage->remove('relation'.$relation);
+            return $callback();
+        }
+        return $model;
+
     }
 }

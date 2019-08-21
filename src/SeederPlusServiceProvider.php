@@ -7,6 +7,7 @@ use Temper\SeederPlus\console\DeleteSnapshotCommand;
 use Temper\SeederPlus\console\ResetSnapshotCommand;
 use Temper\SeederPlus\console\SeedCommand;
 use Temper\SeederPlus\console\SetupDatabaseCommand;
+use Temper\SeederPlus\console\SetupRelationCommand;
 use Temper\SeederPlus\console\SnapshotDatabaseCommand;
 use Temper\SeederPlus\console\SnapshotsCommand;
 
@@ -52,7 +53,8 @@ class SeederPlusServiceProvider extends ServiceProvider
                  SnapshotDatabaseCommand::class,
                  ResetSnapshotCommand::class,
                  SnapshotsCommand::class,
-                 DeleteSnapshotCommand::class
+                 DeleteSnapshotCommand::class,
+                 SetupRelationCommand::class
              ]);
         }
     }

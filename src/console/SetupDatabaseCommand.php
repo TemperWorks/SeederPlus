@@ -6,6 +6,8 @@ namespace Temper\SeederPlus\console;
 
 use Illuminate\Console\Command;
 use Temper\SeederPlus\Database\BaseSnapshot;
+use Temper\SeederPlus\SeederFactory;
+use Temper\SeederPlus\SeederPlus;
 use Temper\SeederPlus\Storage;
 
 class SetupDatabaseCommand extends Command
@@ -16,16 +18,21 @@ class SetupDatabaseCommand extends Command
 
     private $baseSnapshot;
 
-    public function __construct(BaseSnapshot $baseSnapshot, Storage $storage)
+    private $seeder;
+
+    public function __construct(BaseSnapshot $baseSnapshot, Storage $storage, SeederFactory $seeder)
     {
         parent::__construct();
         $this->baseSnapshot = $baseSnapshot;
         $this->storage = $storage;
+        $this->seeder = $seeder;
     }
 
     public function handle()
     {
         $this->info('Setting db to the minimal state');
+        $this->seeder->setContainer($this->laravel);
+        $this->seeder->setCommand($this);
 
         if (!$this->baseSnapshot->exists() || $this->option('build')) {
 
@@ -33,7 +40,13 @@ class SetupDatabaseCommand extends Command
 
             $this->call('migrate:fresh');
 
-            // [todo] Run seeder?
+            $this->seeder->getAvailableSeeders($this->getPaths())
+                ->filter(function(SeederPlus $seeder) {
+                    return $seeder->isDefaultNeededData();
+                })->each(function($seeder){
+                    $this->info("Running {$seeder->getDisplayName()}");
+                    $seeder->__invoke();
+                });
 
             $this->baseSnapshot->make();
 
@@ -44,5 +57,12 @@ class SetupDatabaseCommand extends Command
         $this->baseSnapshot->restore();
 
         $this->info('Base db ready, lets go 🚀');
+    }
+
+    private function getPaths(): array
+    {
+        return [
+            $this->laravel->databasePath().DIRECTORY_SEPARATOR.'seeds'
+        ];
     }
 }
