@@ -6,14 +6,21 @@ It enables to easily & fast seed or reset a database to a certain state.
 ![Image of seeder menu](menu.png)
 
 ## Installation
-
-[todo] publish maybe? 
+Add the package to your repositories in the composer.json
+```json
+{
+    "type": "vcs",
+    "url": "https://github.com/TemperWorks/SeederPlus"
+}
+```
 
 You can install the package via composer:
 
 ```bash
 composer require Temper/seederplus
 ```
+
+[todo] publish maybe? 
 
 ## Usage
 
