@@ -15,13 +15,6 @@ abstract class SeederPlus extends Seeder
     protected $enabled = true;
     protected $hideFromMenu = false;
 
-    private $storage;
-
-    public function __construct(Storage $storage)
-    {
-        $this->storage = $storage;
-    }
-
     public function getSection(): string
     {
         return $this->section;
@@ -86,7 +79,8 @@ abstract class SeederPlus extends Seeder
 
     public function relation(string $relation, callable $callback)
     {
-        $relation_id = $this->storage->get('relation.'.$relation);
+        $storage = resolve(Storage::class);
+        $relation_id = $storage->get('relation.'.$relation);
         if($relation_id === null){
             return $callback();
         }
@@ -97,7 +91,7 @@ abstract class SeederPlus extends Seeder
         $modelClass = resolve($this->relations[$relation]);
         $model = $modelClass->find($relation_id);
         if($model === null){
-            $this->storage->delete('relation'.$relation);
+            $storage->delete('relation'.$relation);
             return $callback();
         }
         return $model;
