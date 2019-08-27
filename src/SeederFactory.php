@@ -28,7 +28,7 @@ class SeederFactory
             $class = resolve($this->getSeederName($file));
             return $class->setContainer($this->container)->setCommand($this->command);
         })->filter(function ($seeder) {
-            return is_subclass_of($seeder, SeederPlus::class);
+            return is_subclass_of($seeder, SeederPlus::class) && !$seeder->hideFromMenu();
         })->sort();
 
     }

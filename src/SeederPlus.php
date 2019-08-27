@@ -13,6 +13,7 @@ abstract class SeederPlus extends Seeder
     protected $relations = [];
     protected $name = null;
     protected $enabled = true;
+    protected $hideFromMenu = false;
 
     private $storage;
 
@@ -42,6 +43,11 @@ abstract class SeederPlus extends Seeder
     public function available(): bool
     {
         return $this->enabled;
+    }
+
+    public function hideFromMenu(): bool
+    {
+        return $this->hideFromMenu;
     }
 
     public function isDefaultNeededData(): bool
@@ -91,7 +97,7 @@ abstract class SeederPlus extends Seeder
         $modelClass = resolve($this->relations[$relation]);
         $model = $modelClass->find($relation_id);
         if($model === null){
-            $this->storage->remove('relation'.$relation);
+            $this->storage->delete('relation'.$relation);
             return $callback();
         }
         return $model;
