@@ -52,9 +52,9 @@ class SeedCommand extends Command
 
     private function getPaths(): array
     {
-        return [
+        return config('seederplus.seeder_directories', [
             $this->laravel->databasePath().DIRECTORY_SEPARATOR.'seeds'
-        ];
+        ]);
     }
 
     public function closeMenu(): void
